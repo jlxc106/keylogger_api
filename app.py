@@ -2,10 +2,13 @@ from flask import Flask, jsonify, request, abort
 from pymongo import MongoClient
 from pprint import pprint
 from bson.json_util import dumps
+import json
 
 app = Flask(__name__)
 
-client = MongoClient('mongodb://test_user:password1@ds251022.mlab.com:51022/keylogs')
+with open('config.json') as json_file:
+    data = json.load(json_file)
+    client = MongoClient(data['mongoURI'])
 db = client.get_default_database()
 collection = db.logs
 
