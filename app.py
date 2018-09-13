@@ -10,11 +10,9 @@ app = Flask(__name__)
 
 is_heroku = os.getenv('isHeroku', None)
 if is_heroku:
-    print 'is heroku'
     mongoURI = os.getenv('mongoURI', None)
     client = MongoClient(mongoURI)
 else:
-    print 'is not heroku'
     with open('config.json') as json_file:
         data = json.load(json_file)
         client = MongoClient(data['mongoURI'])
