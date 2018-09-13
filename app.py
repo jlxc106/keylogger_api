@@ -1,13 +1,20 @@
 from flask import Flask, jsonify, request, abort
 from pymongo import MongoClient
 from bson.json_util import dumps
+import os
+
 import json
 
 app = Flask(__name__)
 
-with open('config.json') as json_file:
-    data = json.load(json_file)
-    client = MongoClient(data['mongoURI'])
+is_heroku = os.getenv('isHeroku', None)
+if is_heroku:
+    mongoURI = os.getenv('mongoURI', None)
+    client = MongoClient(mongoURI)
+else:
+    with open('config.json') as json_file:
+        data = json.load(json_file)
+        client = MongoClient(data['mongoURI'])
 db = client.get_default_database()
 collection = db.logs
 
